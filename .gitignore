@@ -3,3 +3,6 @@
 
 # flake8 conf for black
 .flake8
+
+# application
+temp/*.*

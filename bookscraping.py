@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 
 book_url = "http://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
@@ -6,6 +7,12 @@ book_url = "http://books.toscrape.com/catalogue/sapiens-a-brief-history-of-human
 r = requests.get(book_url)
 
 if r.status_code == 200:
-    print(r.text)
+    with open("temp/temp.html", "wb") as f:
+        f.write(r.content)
 else:
     print("Nooooo!")
+
+with open("temp/temp.html") as fp:
+    soup = BeautifulSoup(fp, "html.parser")
+
+print(soup.prettify())
