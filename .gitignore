@@ -1,8 +1,8 @@
-# pyenv
+# pyenv auto activation file
 .python-version
 
-# flake8 conf for black
+# flake8 conf for black formatter
 .flake8
 
-# application
+# all files in books folder
 books/*.*
