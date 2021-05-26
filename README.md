@@ -16,6 +16,7 @@ You can change the book_url var to test if it works with all pages.
 Export one book page to CSV file.
 
 BUG: excel view not working if using ",' instead of ";", have to find a workaround
+TO-DO: refactor all the code to build dictionary in one pass
 
 ## beta 2
 
