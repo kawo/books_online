@@ -13,9 +13,9 @@ You can change the book_url var to test if it works with all pages.
 
 ## beta 1
 
-First working release. Only output the results in console.
+Export one book page to CSV file.
 
-TO-DO: write the CSV file
+BUG: excel view not working if using ",' instead of ";", have to find a workaround
 
 ## beta 2
 
