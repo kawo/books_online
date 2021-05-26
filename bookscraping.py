@@ -6,13 +6,14 @@ import csv
 
 book_url = "http://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
-# requesting url
+# scraping url with requests
 r = requests.get(book_url)
 
 # checking if url is alive
 # r.ok check if HTTP request return 200
 if r.ok:
     # instancing BS4 object with url
+    # using content instead of text to grap the header with the body
     # using lxml parser instead of default html.parser because it's faster
     soup = BeautifulSoup(r.content, "lxml")
 
@@ -39,12 +40,14 @@ if r.ok:
 
     # parsing all class name with "star-rating"
     # only the first occurence is about the active book
-    # so we gather the second item in the array
+    # so we gather the second item in the array (the class rating)
     rating = []
     for element in soup.find_all(class_="star-rating"):
         for value in element["class"]:
             rating.append(value)
 
+    # grabing book cover
+    # trunkating url to get the absolute one
     book_img = soup.find("img", alt=title.text)
     book_img_url = book_img.get("src").replace("../..", "http://books.toscrape.com")
 
