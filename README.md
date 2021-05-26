@@ -15,11 +15,13 @@ You can change the book_url var to test if it works with all pages.
 
 Export one book page to CSV file.
 
-TODO: refactor all the code to build dictionary in one pass
+**Status: released**
 
 ## beta 2
 
 Automate the process for all books from one category
+
+**Status: in dev**
 
 ## beta xxx
 
