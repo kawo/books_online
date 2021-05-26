@@ -8,15 +8,13 @@ book_url = "http://books.toscrape.com/catalogue/sapiens-a-brief-history-of-human
 
 # requesting url
 r = requests.get(book_url)
-# fix bad guess of encoding resulting in bad £ symbol showing
-r.encoding = "UTF-8"
 
 # checking if url is alive
 # r.ok check if HTTP request return 200
 if r.ok:
     # instancing BS4 object with url
     # using lxml parser instead of default html.parser because it's faster
-    soup = BeautifulSoup(r.text, "lxml")
+    soup = BeautifulSoup(r.content, "lxml")
 
     title = soup.find("li", class_="active")
 
@@ -64,8 +62,9 @@ if r.ok:
     book["image_url"] = book_img_url
 
     # csv creation
+    # using "utf-8-sig" for excel compatibility
     try:
-        with open("books/book.csv", "w") as csvfile:
+        with open("books/book.csv", "w", encoding="utf-8-sig") as csvfile:
             fieldnames = [
                 "product_page_url",
                 "universal_product_code",
@@ -78,12 +77,14 @@ if r.ok:
                 "review_rating",
                 "image_url",
             ]
-            csv.excel.delimiter = ";"
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, dialect=csv.excel)
             writer.writeheader()
             writer.writerow(book)
-    except IOError:
-        print("I/O error")
+        print(f"CSV generated with {csvfile.encoding} encoding!")
+    except IOError as err:
+        print(f"IOError {err}!")
 
 else:
-    print("Nooooo!")
+    # basic error handling
+    # will tweak it if there is time
+    print(f"The requested url ({book_url}) is not valid!")
