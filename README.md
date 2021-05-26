@@ -10,6 +10,7 @@
     > python bookscraping.py
 
 You can change the book_url var to test if it works with all pages.
+
 ## beta 1
 
 First working release. Only output the results in console.

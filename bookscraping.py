@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 book_url = "http://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
@@ -23,7 +24,7 @@ if r.ok:
     # other is to look for the only "p" tag without class..
     description = soup.find_all("p", class_="")
 
-    # building dictionarie from book's information table
+    # building dictionary from book's information table
     product_infos = {}
     table = soup.find("table", class_="table table-striped")
     for row in table.find_all("tr"):
@@ -49,19 +50,40 @@ if r.ok:
     book_img = soup.find("img", alt=title.text)
     book_img_url = book_img.get("src").replace("../..", "http://books.toscrape.com")
 
-    # printing all data collected for debugging purpose
-    # before writing CSV
-    print("product_page_url: " + book_url)
-    print("upc: " + product_infos["UPC"])
-    print("title: " + title.text)
-    print(
-        "price_including_tax: " + product_infos["Price (incl. tax)"]
-    )  # TO-DO: extract only the value
-    print("price_excluding_tax: " + product_infos["Price (excl. tax)"])  # TO-DO: same
-    print("number_available: " + product_infos["Availability"])
-    print("product_description: " + description[0].text)
-    print("category: " + product_category[2])
-    print("rating: " + rating[1])
-    print("image_url: " + book_img_url)
+    # building dictionary for easy csv creation
+    book = {}
+    book["product_page_url"] = book_url
+    book["universal_product_code"] = product_infos["UPC"]
+    book["title"] = title.text
+    book["price_including_tax"] = product_infos["Price (incl. tax)"]
+    book["price_excluding_tax"] = product_infos["Price (excl. tax)"]
+    book["number_available"] = product_infos["Availability"]
+    book["product_description"] = description[0].text.replace("\n", "")
+    book["category"] = product_category[2].replace("\n", "")
+    book["review_rating"] = rating[1]
+    book["image_url"] = book_img_url
+
+    # csv creation
+    try:
+        with open("books/book.csv", "w") as csvfile:
+            fieldnames = [
+                "product_page_url",
+                "universal_product_code",
+                "title",
+                "price_including_tax",
+                "price_excluding_tax",
+                "number_available",
+                "product_description",
+                "category",
+                "review_rating",
+                "image_url",
+            ]
+            csv.excel.delimiter = ";"
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, dialect=csv.excel)
+            writer.writeheader()
+            writer.writerow(book)
+    except IOError:
+        print("I/O error")
+
 else:
     print("Nooooo!")
