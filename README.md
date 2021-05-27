@@ -7,22 +7,22 @@
 3. Install required packages:
     > pip install -r requirements.txt
 4. run the script:
-    > python bookscraping.py
-
-You can change the book_url var to test if it works with all pages.
+    > python main.py
 
 ## beta 1
 
 Export one book page to CSV file.
 
-**Status: released**
+**Status: released.**
 
 ## beta 2
 
 Automate the process for all books from one category
 
-**Status: in dev**
+**Status: in dev.**
 
-## beta xxx
+## beta 3
 
-...
+Scrap all site!
+
+**Status: planned.**
