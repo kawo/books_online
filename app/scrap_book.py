@@ -1,14 +1,13 @@
 # coding: utf-8
 
+from os import name
 import requests
 from bs4 import BeautifulSoup
 import csv
 
-# import scrap_navigation
-
 
 class ScrapBook:
-    def scrapBookPage(book_url):
+    def scrapBookPage(self, book_url):
         # scraping url with requests
         r = requests.get(book_url)
 
@@ -33,6 +32,10 @@ class ScrapBook:
                 row_title = row.find("th")
                 row_value = row.find("td")
                 product_infos[row_title.text] = row_value.text
+            # grab only the number for availability
+            availability = int(
+                "".join(i for i in product_infos["Availability"] if i.isdigit())
+            )
 
             # only one list with "breadcrumb" class for category
             # effective category is always in pos 2 within array
@@ -40,6 +43,7 @@ class ScrapBook:
             list = soup.find("ul", class_="breadcrumb")
             for item in list.find_all("li"):
                 product_category.append(item.text)
+            category = product_category[2].replace("\n", "")
 
             # parsing all class name with "star-rating"
             # only the first occurence is about the active book
@@ -63,9 +67,9 @@ class ScrapBook:
             book["title"] = title.text
             book["price_including_tax"] = product_infos["Price (incl. tax)"]
             book["price_excluding_tax"] = product_infos["Price (excl. tax)"]
-            book["number_available"] = product_infos["Availability"]
+            book["number_available"] = availability
             book["product_description"] = description[0].text.replace("\n", "")
-            book["category"] = product_category[2].replace("\n", "")
+            book["category"] = category
             book["review_rating"] = rating[1]
             book["image_url"] = book_img_url
 
@@ -100,4 +104,6 @@ class ScrapBook:
             # will tweak it if there is time
             print(f"The requested url ({book_url}) is not valid!")
             raise SystemExit
-        return print(f"Book \"{book['title']}\" added to CSV!")
+        return print(
+            f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
+        )
