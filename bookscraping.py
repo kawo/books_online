@@ -30,6 +30,8 @@ if r.ok:
         row_title = row.find("th")
         row_value = row.find("td")
         product_infos[row_title.text] = row_value.text
+    # grab only the number for availability
+    availability = int("".join(i for i in product_infos["Availability"] if i.isdigit()))
 
     # only one list with "breadcrumb" class for category
     # effective category is always in pos 2 within array
@@ -58,7 +60,7 @@ if r.ok:
     book["title"] = title.text
     book["price_including_tax"] = product_infos["Price (incl. tax)"]
     book["price_excluding_tax"] = product_infos["Price (excl. tax)"]
-    book["number_available"] = product_infos["Availability"]
+    book["number_available"] = availability
     book["product_description"] = description[0].text.replace("\n", "")
     book["category"] = product_category[2].replace("\n", "")
     book["review_rating"] = rating[1]

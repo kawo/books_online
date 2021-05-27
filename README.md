@@ -15,14 +15,16 @@ You can change the book_url var to test if it works with all pages.
 
 Export one book page to CSV file.
 
-**Status: released**
+**Status: released.**
 
 ## beta 2
 
 Automate the process for all books from one category
 
-**Status: in dev**
+**Status: in dev.**
 
-## beta xxx
+## beta 3
 
-...
+Scrap all the site!
+
+**Status: planned.**
