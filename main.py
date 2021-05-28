@@ -6,7 +6,7 @@ def main():
 
     # grabing dict of categories
     cat_list = ScrapCategory.scrapCategoryList()
-    cat_url = cat_list["Mystery"]
+    cat_url = cat_list["Nonfiction"]
 
     # grabing list of books from one category
     book_list = ScrapCategory()
