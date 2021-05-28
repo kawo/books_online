@@ -8,7 +8,7 @@ def main():
     cat_list = ScrapCategory.scrapCategoryList()
     for name, url in cat_list.items():
         print(f"{name}")
-    cat_name = input(f"Type a category from the list above: ")
+    cat_name = input("Type a category from the list above: ")
     cat_url = cat_list[cat_name]
 
     # grabing list of books from one category
