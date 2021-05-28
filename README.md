@@ -19,18 +19,10 @@ Export one book page to CSV file.
 
 Automate the process for all books from one category
 
-**Status: in dev.**
-<<<<<<< HEAD
+**Status: released.**
 
-## beta 3
-
-Scrap all the site!
-
-=======
-
-## beta 3
+## final
 
 Scrap all site!
 
->>>>>>> beta2
 **Status: planned.**
