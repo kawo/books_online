@@ -1,8 +1,6 @@
 from app.scrap_book import ScrapBook
 from app.scrap_navigation import ScrapCategory
 
-# BUG: out of range with Default cat
-
 
 def main():
 

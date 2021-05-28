@@ -42,7 +42,11 @@ class ScrapBook:
 
                     # one solution was to take the description in header,
                     # other is to look for the only "p" tag without class..
-                    description = soup.find_all("p", class_="")
+                    if soup.find_all("div", id="product_description"):
+                        description = soup.find_all("p", class_="")
+                        description = description[0].text.replace("\n", "")
+                    else:
+                        description = "None"
 
                     # building dictionary from book's information table
                     product_infos = {}
@@ -88,7 +92,7 @@ class ScrapBook:
                     book["price_including_tax"] = product_infos["Price (incl. tax)"]
                     book["price_excluding_tax"] = product_infos["Price (excl. tax)"]
                     book["number_available"] = availability
-                    book["product_description"] = description[0].text.replace("\n", "")
+                    book["product_description"] = description
                     book["category"] = category
                     book["review_rating"] = rating[1]
                     book["image_url"] = book_img_url
