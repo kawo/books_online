@@ -15,6 +15,7 @@ from requests.exceptions import (
     TooManyRedirects,
     URLRequired,
 )
+import os.path
 
 
 class ScrapBook:
@@ -92,30 +93,76 @@ class ScrapBook:
                     book["review_rating"] = rating[1]
                     book["image_url"] = book_img_url
 
-                    # csv creation
+                    # csv creation/append
                     # using "utf-8-sig" for excel compatibility
                     try:
-                        with open(
-                            "books/book.csv", "w", encoding="utf-8-sig", newline=""
-                        ) as csvfile:
-                            fieldnames = [
-                                "product_page_url",
-                                "universal_product_code",
-                                "title",
-                                "price_including_tax",
-                                "price_excluding_tax",
-                                "number_available",
-                                "product_description",
-                                "category",
-                                "review_rating",
-                                "image_url",
-                            ]
-                            writer = csv.DictWriter(
-                                csvfile, fieldnames=fieldnames, dialect=csv.excel
-                            )
-                            writer.writeheader()
-                            writer.writerow(book)
-                        print(f"CSV generated with {csvfile.encoding} encoding!")
+                        # if csv exists, append
+                        if os.path.isfile(f"books/{category}.csv"):
+                            # but first we check if book is already in it
+                            with open(f"books/{category}.csv", "r") as csvfile:
+                                if book["product_page_url"] in csvfile.read():
+                                    print(
+                                        f"Book \"{book['title']}\" already exists! Skipping..."
+                                    )
+                                else:
+                                    with open(
+                                        f"books/{category}.csv",
+                                        "a",
+                                        encoding="utf-8-sig",
+                                        newline="",
+                                    ) as csvfile:
+                                        fieldnames = [
+                                            "product_page_url",
+                                            "universal_product_code",
+                                            "title",
+                                            "price_including_tax",
+                                            "price_excluding_tax",
+                                            "number_available",
+                                            "product_description",
+                                            "category",
+                                            "review_rating",
+                                            "image_url",
+                                        ]
+                                        writer = csv.DictWriter(
+                                            csvfile,
+                                            fieldnames=fieldnames,
+                                            dialect=csv.excel,
+                                        )
+                                        writer.writerow(book)
+                                        print(
+                                            f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
+                                        )
+                        else:
+                            # if csv doesnt exists, create
+                            with open(
+                                f"books/{category}.csv",
+                                "w",
+                                encoding="utf-8-sig",
+                                newline="",
+                            ) as csvfile:
+                                fieldnames = [
+                                    "product_page_url",
+                                    "universal_product_code",
+                                    "title",
+                                    "price_including_tax",
+                                    "price_excluding_tax",
+                                    "number_available",
+                                    "product_description",
+                                    "category",
+                                    "review_rating",
+                                    "image_url",
+                                ]
+                                writer = csv.DictWriter(
+                                    csvfile, fieldnames=fieldnames, dialect=csv.excel
+                                )
+                                writer.writeheader()
+                                writer.writerow(book)
+                                print(
+                                    f'CSV created for "{category}" category with {csvfile.encoding} encoding!'
+                                )
+                                print(
+                                    f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
+                                )
                     except IOError as err:
                         print(f"IOError {err}!")
                         raise SystemExit
@@ -124,9 +171,6 @@ class ScrapBook:
                     # will tweak it if there is time
                     print(f"The requested url ({book_url}) is not valid!")
                     raise SystemExit
-                return print(
-                    f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
-                )
             # generic except according https://docs.python-requests.org/en/latest/_modules/requests/exceptions/
             except (
                 HTTPError,
