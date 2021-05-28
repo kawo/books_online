@@ -1,3 +1,7 @@
+# python cache
+*__pycache__*
+*.pyc
+
 # pyenv auto activation file
 .python-version
 
