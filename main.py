@@ -6,10 +6,10 @@ def main():
 
     # grabing dict of categories
     cat_list = ScrapCategory.scrapCategoryList()
-    for name, url in cat_list.items():
-        print(f"{name}")
-    cat_name = input("Type a category from the list above: ")
-    cat_url = cat_list[cat_name]
+    # for name, url in cat_list.items():
+    #    print(f"{name}")
+    # cat_name = input("Type a category from the list above: ")
+    cat_url = cat_list["Mystery"]
 
     # grabing list of books from one category
     book_list = ScrapCategory()

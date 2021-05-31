@@ -19,11 +19,14 @@ books_url = []
 recursion_pointer = False
 base_url = ""
 
+# using requests session for better performance
+requests_session = requests.Session()
+
 
 class ScrapCategory:
     def scrapCategoryList():
         try:
-            r = requests.get("http://books.toscrape.com/index.html")
+            r = requests_session.get("http://books.toscrape.com/index.html")
             if r.ok:
                 # instancing BS4 object with url
                 # using content instead of text to grab the header with the body
@@ -65,7 +68,7 @@ class ScrapCategory:
         if category_url.startswith(url_domain):
             try:
                 # scraping url with requests
-                r = requests.get(category_url)
+                r = requests_session.get(category_url)
 
                 # checking if url is alive
                 # r.ok check if HTTP request return 200

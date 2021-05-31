@@ -17,6 +17,9 @@ from requests.exceptions import (
 )
 import os.path
 
+# using requests session for better performance
+requests_session = requests.Session()
+
 
 class ScrapBook:
     def scrapBookPage(self, book_url):
@@ -27,7 +30,7 @@ class ScrapBook:
         if book_url.startswith(url_domain):
             try:
                 # scraping url with requests
-                r = requests.get(book_url)
+                r = requests_session.get(book_url)
 
                 # checking if url is alive
                 # r.ok check if HTTP request return 200
