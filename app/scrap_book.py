@@ -16,6 +16,8 @@ from requests.exceptions import (
     URLRequired,
 )
 import os.path
+import logging
+import cchardet
 
 
 class ScrapBook:
@@ -108,6 +110,9 @@ class ScrapBook:
                                     print(
                                         f"Book \"{book['title']}\" already exists! Skipping..."
                                     )
+                                    logging.info(
+                                        f"Book \"{book['title']}\" already exists! Skipping..."
+                                    )
                                 else:
                                     with open(
                                         f"books/{category}.csv",
@@ -134,6 +139,9 @@ class ScrapBook:
                                         )
                                         writer.writerow(book)
                                         print(
+                                            f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
+                                        )
+                                        logging.info(
                                             f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
                                         )
                         else:
@@ -164,16 +172,24 @@ class ScrapBook:
                                 print(
                                     f'CSV created for "{category}" category with {csvfile.encoding} encoding!'
                                 )
+                                logging.info(
+                                    f'CSV created for "{category}" category with {csvfile.encoding} encoding!'
+                                )
                                 print(
+                                    f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
+                                )
+                                logging.info(
                                     f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
                                 )
                     except IOError as err:
                         print(f"IOError {err}!")
+                        logging.error(f"{err}")
                         raise SystemExit
                 else:
                     # basic error handling
                     # will tweak it if there is time
                     print(f"The requested url ({book_url}) is not valid!")
+                    logging.error(f"The requested url ({book_url}) is not valid!")
                     raise SystemExit
             # generic except according https://docs.python-requests.org/en/latest/_modules/requests/exceptions/
             except (
@@ -191,7 +207,11 @@ class ScrapBook:
                 InvalidURL,
             ) as err:
                 print(f"Error: {err}")
+                logging.error(f"{err}")
         else:
             print(
+                f"Sorry, this scrapper only works for {url_domain} domain! URL you provided: {book_url} :("
+            )
+            logging.error(
                 f"Sorry, this scrapper only works for {url_domain} domain! URL you provided: {book_url} :("
             )

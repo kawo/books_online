@@ -14,6 +14,7 @@ from requests.exceptions import (
     TooManyRedirects,
     URLRequired,
 )
+import logging
 
 books_url = []
 recursion_pointer = False
@@ -59,6 +60,7 @@ class ScrapCategory:
             InvalidURL,
         ) as err:
             print(f"Error: {err}")
+            logging.error(f"{err}")
 
     def scrapCategoryPage(self, category_url):
 
@@ -120,7 +122,11 @@ class ScrapCategory:
                 InvalidURL,
             ) as err:
                 print(f"Error: {err}")
+                logging.error(f"{err}")
         else:
             print(
+                f"Sorry, this scrapper only works for {url_domain} domain! URL you provided: {category_url} :("
+            )
+            logging.error(
                 f"Sorry, this scrapper only works for {url_domain} domain! URL you provided: {category_url} :("
             )

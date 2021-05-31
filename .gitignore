@@ -10,3 +10,9 @@
 
 # all files in books folder
 books/*.*
+
+# logging files
+logs/*.*
+
+# profiling
+*.prof
