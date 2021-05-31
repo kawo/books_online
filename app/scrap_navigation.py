@@ -40,6 +40,9 @@ class ScrapCategory:
                         ).replace("index.html", "")
                         category_name = link.text.replace("\n", "").strip()
                         category_list[category_name] = category_url
+                # "Books" category is not really a valid cat
+                # so we delete this entry
+                del category_list["Books"]
                 return category_list
         except (
             HTTPError,

@@ -2,23 +2,23 @@ from app.scrap_book import ScrapBook
 from app.scrap_navigation import ScrapCategory
 
 
+def bookScraping(book_list):
+    scrap_book = ScrapBook()
+
+    for book in book_list:
+        scrap_book.scrapBookPage(book)
+
+
 def main():
 
-    # grabing dict of categories
+    # grabing all categories in dict
+    # then looping to scrap all products
+    book_list = ScrapCategory()
     cat_list = ScrapCategory.scrapCategoryList()
     for name, url in cat_list.items():
-        print(f"{name}")
-    cat_name = input("Type a category from the list above: ")
-    cat_url = cat_list[cat_name]
-
-    # grabing list of books from one category
-    book_list = ScrapCategory()
-    book_list = book_list.scrapCategoryPage(cat_url)
-
-    # scraping all books from cat!
-    scrap = ScrapBook()
-    for book in book_list:
-        scrap.scrapBookPage(book)
+        print(f"Scraping all books from {name} category...")
+        books = book_list.scrapCategoryPage(url)
+        bookScraping(books)
 
 
 if __name__ == "__main__":
