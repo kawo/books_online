@@ -1,6 +1,9 @@
 from app.scrap_book import ScrapBook
 from app.scrap_navigation import ScrapCategory
 
+# TODO: optimization with cProfile
+# TODO: switching from print to log
+
 
 def bookScraping(book_list):
     scrap_book = ScrapBook()
