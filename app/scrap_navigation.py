@@ -71,6 +71,12 @@ class ScrapCategory:
         # will use regex if time
         url_domain = "http://books.toscrape.com"
         if category_url.startswith(url_domain):
+            # uuugly way to manage the url changing with recursion
+            global recursion_pointer, base_url, books_url
+            if recursion_pointer is False:
+                base_url = category_url
+            else:
+                category_url = base_url
             try:
                 # scraping url with requests
                 r = requests_session.get(category_url)
@@ -98,14 +104,19 @@ class ScrapCategory:
                         for data in soup.find_all("ul", class_="pager"):
                             for nav in data.find_all("li", class_="next"):
                                 for link in nav.find_all("a"):
-                                    # uuugly way to manage the url changing with recursion
-                                    global recursion_pointer, base_url
                                     if recursion_pointer is False:
                                         base_url = category_url
                                         next_page = category_url + link.get("href")
                                         recursion_pointer = True
+                                        logging.info(
+                                            f"Recursion: False, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
+                                        )
                                     else:
                                         next_page = base_url + link.get("href")
+                                        recursion_pointer = False
+                                        logging.info(
+                                            f"Recursion: True, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
+                                        )
                                     return self.scrapCategoryPage(next_page)
                     return books_url
 

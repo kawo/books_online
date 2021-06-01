@@ -2,9 +2,9 @@ from app.scrap_book import ScrapBook
 from app.scrap_navigation import ScrapCategory
 import logging
 
-# TODO: optimization with cProfile
-
-logging.basicConfig(filename="logs/scap.log", encoding="utf-8", level=logging.DEBUG)
+logging.basicConfig(
+    filename="logs/scap.log", filemode="w", encoding="utf-8", level=logging.DEBUG
+)
 
 
 def bookScraping(book_list):
@@ -24,7 +24,8 @@ def main():
         print(f"Scraping all books from {name} category...")
         logging.info(f"Scraping all books from {name} category with {url} url")
         books = book_list.scrapCategoryPage(url)
-        bookScraping(books)
+        logging.info(f"Book list: {books}")
+        # bookScraping(books)
 
 
 if __name__ == "__main__":

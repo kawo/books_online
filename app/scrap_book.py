@@ -17,7 +17,6 @@ from requests.exceptions import (
 )
 import os.path
 import logging
-import cchardet
 
 # using requests session for better performance
 requests_session = requests.Session()
