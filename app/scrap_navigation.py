@@ -14,10 +14,10 @@ from requests.exceptions import (
     TooManyRedirects,
     URLRequired,
 )
+import logging
 
-books_url = []
-recursion_pointer = False
-base_url = ""
+# using requests session for better performance
+requests_session = requests.Session()
 
 # using requests session for better performance
 requests_session = requests.Session()
@@ -43,6 +43,9 @@ class ScrapCategory:
                         ).replace("index.html", "")
                         category_name = link.text.replace("\n", "").strip()
                         category_list[category_name] = category_url
+                # "Books" category is not really a valid cat
+                # so we delete this entry
+                del category_list["Books"]
                 return category_list
         except (
             HTTPError,
@@ -59,13 +62,20 @@ class ScrapCategory:
             InvalidURL,
         ) as err:
             print(f"Error: {err}")
+            logging.error(f"{err}")
 
-    def scrapCategoryPage(self, category_url):
+    def scrapCategoryPage(
+        self, category_url, recursion=False, books_url=None, base_url=None
+    ):
+        if books_url is None:
+            books_url = []
 
         # ugly way to check if the domain IS books.toscrape.com
         # will use regex if time
         url_domain = "http://books.toscrape.com"
         if category_url.startswith(url_domain):
+            if recursion is False:
+                base_url = category_url
             try:
                 # scraping url with requests
                 r = requests_session.get(category_url)
@@ -93,15 +103,20 @@ class ScrapCategory:
                         for data in soup.find_all("ul", class_="pager"):
                             for nav in data.find_all("li", class_="next"):
                                 for link in nav.find_all("a"):
-                                    # uuugly way to manage the url changing with recursion
-                                    global recursion_pointer, base_url
-                                    if recursion_pointer is False:
-                                        base_url = category_url
+                                    if recursion is False:
+                                        recursion = True
                                         next_page = category_url + link.get("href")
-                                        recursion_pointer = True
-                                    else:
+                                        logging.info(
+                                            f"Recursion: False, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
+                                        )
+                                    if recursion is True:
                                         next_page = base_url + link.get("href")
-                                    return self.scrapCategoryPage(next_page)
+                                        logging.info(
+                                            f"Recursion: True, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
+                                        )
+                                    return self.scrapCategoryPage(
+                                        next_page, recursion, books_url, base_url
+                                    )
                     return books_url
 
             # generic except according https://docs.python-requests.org/en/latest/_modules/requests/exceptions/
@@ -120,7 +135,11 @@ class ScrapCategory:
                 InvalidURL,
             ) as err:
                 print(f"Error: {err}")
+                logging.error(f"{err}")
         else:
             print(
+                f"Sorry, this scrapper only works for {url_domain} domain! URL you provided: {category_url} :("
+            )
+            logging.error(
                 f"Sorry, this scrapper only works for {url_domain} domain! URL you provided: {category_url} :("
             )

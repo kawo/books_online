@@ -1,24 +1,31 @@
 from app.scrap_book import ScrapBook
 from app.scrap_navigation import ScrapCategory
+import logging
+
+logging.basicConfig(
+    filename="logs/scap.log", filemode="w", encoding="utf-8", level=logging.DEBUG
+)
+
+
+def bookScraping(book_list):
+    scrap_book = ScrapBook()
+
+    for book in book_list:
+        scrap_book.scrapBookPage(book)
 
 
 def main():
 
-    # grabing dict of categories
-    cat_list = ScrapCategory.scrapCategoryList()
-    # for name, url in cat_list.items():
-    #    print(f"{name}")
-    # cat_name = input("Type a category from the list above: ")
-    cat_url = cat_list["Mystery"]
-
-    # grabing list of books from one category
+    # grabing all categories in dict
+    # then looping to scrap all products
     book_list = ScrapCategory()
-    book_list = book_list.scrapCategoryPage(cat_url)
-
-    # scraping all books from cat!
-    scrap = ScrapBook()
-    for book in book_list:
-        scrap.scrapBookPage(book)
+    cat_list = ScrapCategory.scrapCategoryList()
+    for name, url in cat_list.items():
+        print(f"Scraping all books from {name} category...")
+        logging.info(f"Scraping all books from {name} category with {url} url")
+        books = book_list.scrapCategoryPage(url)
+        logging.info(f"Book list: {books}")
+        bookScraping(books)
 
 
 if __name__ == "__main__":

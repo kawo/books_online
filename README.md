@@ -21,8 +21,8 @@ Automate the process for all books from one category
 
 **Status: released.**
 
-## final
+## beta 3
 
-Scrap all site!
+Scrap whole site!
 
-**Status: planned.**
+**Status: in dev.**
