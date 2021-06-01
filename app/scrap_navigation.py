@@ -16,7 +16,6 @@ from requests.exceptions import (
 )
 import logging
 
-books_url = []
 recursion_pointer = False
 base_url = ""
 
@@ -65,14 +64,16 @@ class ScrapCategory:
             print(f"Error: {err}")
             logging.error(f"{err}")
 
-    def scrapCategoryPage(self, category_url):
+    def scrapCategoryPage(self, category_url, books_url=None):
+        if books_url is None:
+            books_url = []
 
         # ugly way to check if the domain IS books.toscrape.com
         # will use regex if time
         url_domain = "http://books.toscrape.com"
         if category_url.startswith(url_domain):
             # uuugly way to manage the url changing with recursion
-            global recursion_pointer, base_url, books_url
+            global recursion_pointer, base_url
             if recursion_pointer is False:
                 base_url = category_url
             else:
@@ -117,7 +118,7 @@ class ScrapCategory:
                                         logging.info(
                                             f"Recursion: True, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
                                         )
-                                    return self.scrapCategoryPage(next_page)
+                                    return self.scrapCategoryPage(next_page, books_url)
                     return books_url
 
             # generic except according https://docs.python-requests.org/en/latest/_modules/requests/exceptions/
