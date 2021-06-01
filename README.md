@@ -24,7 +24,7 @@ Profiler:
 ## Installation
 
 1. Download or clone the repository
-2. Create a virtualenv with Python 3.9.x
+2. Create a virtualenv with Python **3.9.x**
 3. Install required packages:
     > pip install -r requirements.txt
 4. run the script:
