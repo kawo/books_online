@@ -3,10 +3,20 @@
 Books Online is a virtual company for my first course project @OpenClassrooms.
 I'm in charge of developing a python script to grab books from [http://books.toscrape.com/](http://books.toscrape.com/) and write them in csv files.
 
-Environment: vscode, wsl2
-Libs used: python.requests, BeautifulSoup4
-Profiler: cProfile, snakeviz
-Optimizations: requests.sessions, cchardet
+Environment:
+
+- vscode
+- wsl2
+
+Libs used:
+
+- python.requests
+- BeautifulSoup4
+
+Profiler:
+
+- cProfile
+- snakeviz
 
 ## Installation
 
