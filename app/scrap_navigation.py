@@ -16,9 +16,6 @@ from requests.exceptions import (
 )
 import logging
 
-recursion_pointer = False
-base_url = ""
-
 # using requests session for better performance
 requests_session = requests.Session()
 
@@ -64,7 +61,9 @@ class ScrapCategory:
             print(f"Error: {err}")
             logging.error(f"{err}")
 
-    def scrapCategoryPage(self, category_url, books_url=None):
+    def scrapCategoryPage(
+        self, category_url, recursion=False, books_url=None, base_url=None
+    ):
         if books_url is None:
             books_url = []
 
@@ -72,12 +71,8 @@ class ScrapCategory:
         # will use regex if time
         url_domain = "http://books.toscrape.com"
         if category_url.startswith(url_domain):
-            # uuugly way to manage the url changing with recursion
-            global recursion_pointer, base_url
-            if recursion_pointer is False:
+            if recursion is False:
                 base_url = category_url
-            else:
-                category_url = base_url
             try:
                 # scraping url with requests
                 r = requests_session.get(category_url)
@@ -105,20 +100,20 @@ class ScrapCategory:
                         for data in soup.find_all("ul", class_="pager"):
                             for nav in data.find_all("li", class_="next"):
                                 for link in nav.find_all("a"):
-                                    if recursion_pointer is False:
-                                        base_url = category_url
+                                    if recursion is False:
+                                        recursion = True
                                         next_page = category_url + link.get("href")
-                                        recursion_pointer = True
                                         logging.info(
                                             f"Recursion: False, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
                                         )
-                                    else:
+                                    if recursion is True:
                                         next_page = base_url + link.get("href")
-                                        recursion_pointer = False
                                         logging.info(
                                             f"Recursion: True, url: {next_page}, base_url: {base_url}, category_url: {category_url}"
                                         )
-                                    return self.scrapCategoryPage(next_page, books_url)
+                                    return self.scrapCategoryPage(
+                                        next_page, recursion, books_url, base_url
+                                    )
                     return books_url
 
             # generic except according https://docs.python-requests.org/en/latest/_modules/requests/exceptions/

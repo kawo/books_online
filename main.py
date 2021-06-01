@@ -25,7 +25,7 @@ def main():
         logging.info(f"Scraping all books from {name} category with {url} url")
         books = book_list.scrapCategoryPage(url)
         logging.info(f"Book list: {books}")
-        # bookScraping(books)
+        bookScraping(books)
 
 
 if __name__ == "__main__":
