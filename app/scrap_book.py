@@ -15,7 +15,7 @@ from requests.exceptions import (
     TooManyRedirects,
     URLRequired,
 )
-import os.path
+import os
 import logging
 
 # using requests session for better performance
@@ -143,6 +143,53 @@ class ScrapBook:
                                             dialect=csv.excel,
                                         )
                                         writer.writerow(book)
+                                        if os.path.isdir(f"books/covers/{category}"):
+                                            with open(
+                                                f"books/covers/{category}/{book['title'].replace('/', ' ')}.jpg",
+                                                "wb",
+                                            ) as handle:
+                                                response = requests_session.get(
+                                                    book["image_url"], stream=True
+                                                )
+                                                if response.ok:
+                                                    for block in response.iter_content(
+                                                        1024
+                                                    ):
+                                                        handle.write(block)
+                                                    print(
+                                                        f"Cover saved at books/covers/{category}/{book['title']}.jpg"
+                                                    )
+                                                else:
+                                                    print(
+                                                        f"Cover of \"{book['title']}\" could not be saved :("
+                                                    )
+                                        else:
+                                            os.mkdir(f"books/covers/{category}")
+                                            with open(
+                                                f"books/covers/{category}/{book['title'].replace('/', ' ')}.jpg",
+                                                "wb",
+                                            ) as handle:
+                                                response = requests_session.get(
+                                                    book["image_url"], stream=True
+                                                )
+                                                if response.ok:
+                                                    for block in response.iter_content(
+                                                        1024
+                                                    ):
+                                                        handle.write(block)
+                                                    logging.info(
+                                                        f"Cover saved at books/covers/{category}/{book['title']}.jpg"
+                                                    )
+                                                    print(
+                                                        f"Cover saved at books/covers/{category}/{book['title']}.jpg"
+                                                    )
+                                                else:
+                                                    print(
+                                                        f"Cover of \"{book['title']}\" could not be saved :("
+                                                    )
+                                                    logging.error(
+                                                        f"Cover of \"{book['title']}\" could not be saved :("
+                                                    )
                                         print(
                                             f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
                                         )
@@ -180,6 +227,49 @@ class ScrapBook:
                                 logging.info(
                                     f'CSV created for "{category}" category with {csvfile.encoding} encoding!'
                                 )
+                                if os.path.isdir(f"books/covers/{category}"):
+                                    with open(
+                                        f"books/covers/{category}/{book['title'].replace('/', ' ')}.jpg",
+                                        "wb",
+                                    ) as handle:
+                                        response = requests_session.get(
+                                            book["image_url"], stream=True
+                                        )
+                                        if response.ok:
+                                            for block in response.iter_content(1024):
+                                                handle.write(block)
+                                                print(
+                                                    f"Cover saved at books/covers/{category}/{book['title']}.jpg"
+                                                )
+                                        else:
+                                            print(
+                                                f"Cover of \"{book['title']}\" could not be saved :("
+                                            )
+                                else:
+                                    os.mkdir(f"books/covers/{category}")
+                                    with open(
+                                        f"books/covers/{category}/{book['title'].replace('/', ' ')}.jpg",
+                                        "wb",
+                                    ) as handle:
+                                        response = requests_session.get(
+                                            book["image_url"], stream=True
+                                        )
+                                        if response.ok:
+                                            for block in response.iter_content(1024):
+                                                handle.write(block)
+                                            logging.info(
+                                                f"Cover saved at books/covers/{category}/{book['title']}.jpg"
+                                            )
+                                            print(
+                                                f"Cover saved at books/covers/{category}/{book['title']}.jpg"
+                                            )
+                                        else:
+                                            print(
+                                                f"Cover of \"{book['title']}\" could not be saved :("
+                                            )
+                                            logging.error(
+                                                f"Cover of \"{book['title']}\" could not be saved :("
+                                            )
                                 print(
                                     f"Book \"{book['title']}\" from \"{category}\" category added to CSV!"
                                 )

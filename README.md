@@ -11,6 +11,9 @@ Environment:
 Libs used:
 
 - python.requests
+- python.os
+- python.logging
+- python.csv
 - BeautifulSoup4
 
 Profiler:
