@@ -34,7 +34,7 @@ Profiler:
 
 - Looks for all categories then looping inside to scrap all books
 - One CSV file per category in Books folder
-- Covers of books are in Books/Covers folder
+- Covers of books are in books/covers/category folder (for easier read)
 - Encoding compliant with Excel (and all sheets)
 
 ## Optimizations
