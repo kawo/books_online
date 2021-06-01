@@ -9,10 +9,10 @@
 .flake8
 
 # all files in books folder
-books/*.*
+books/*.csv
 
 # logging files
-logs/*.*
+logs/*.log
 
 # profiling
 *.prof
