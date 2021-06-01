@@ -10,6 +10,7 @@
 
 # all files in books folder
 books/*.csv
+books/covers/*.jpg
 
 # logging files
 logs/*.log

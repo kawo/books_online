@@ -25,4 +25,11 @@ Automate the process for all books from one category
 
 Scrap whole site!
 
-**Status: in dev.**
+**Status: released.**
+
+## final
+
+Scrap covers from all books
+Last cleaning & optimization of code
+
+** Status: in dev.**
