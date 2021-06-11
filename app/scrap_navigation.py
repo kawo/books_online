@@ -19,9 +19,6 @@ import logging
 # using requests session for better performance
 requests_session = requests.Session()
 
-# using requests session for better performance
-requests_session = requests.Session()
-
 
 class ScrapCategory:
     def scrapCategoryList():

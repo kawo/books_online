@@ -21,9 +21,6 @@ import logging
 # using requests session for better performance
 requests_session = requests.Session()
 
-# using requests session for better performance
-requests_session = requests.Session()
-
 
 class ScrapBook:
     def scrapBookPage(self, book_url):
